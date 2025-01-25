@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StudentServiceApplication implements CommandLineRunner {
+public class StudentServiceApplication {
 
     private final StudentRepository studentRepository;
 
@@ -19,10 +19,5 @@ public class StudentServiceApplication implements CommandLineRunner {
         SpringApplication.run(StudentServiceApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        studentRepository.save(new Student("Alice"));
-        studentRepository.save(new Student("Bob"));
-        studentRepository.save(new Student("Charlie"));
-    }
+
 }

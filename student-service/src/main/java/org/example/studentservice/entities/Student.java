@@ -1,47 +1,74 @@
 package org.example.studentservice.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import jakarta.persistence.*;
+import org.example.studentservice.enums.Gender;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    private String firstName;
+    private String lastName;
+    @Column(unique = true)
+    private String apogee;
+    private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-    private String name;
 
-    public Student(UUID id, String name) {
+    public void setId(UUID id) {
         this.id = id;
-        this.name = name;
-    }
-    public Student(String name) {
-        this.name = name;
     }
 
-    public Student() {
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setApogee(String apogee) {
+        this.apogee = apogee;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getApogee() {
+        return apogee;
     }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
 
 
 }

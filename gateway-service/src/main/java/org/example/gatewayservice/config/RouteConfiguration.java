@@ -16,8 +16,15 @@ public class RouteConfiguration {
                 .route("auth-service", r -> r
                         .path("/api/auth/**")
                         .uri("lb://auth-service"))
+                .route("professor-service", r -> r
+                        .path("/api/professors/**")
+                        .filters(f -> f
+                                .filter(jwtFilter.apply(filterConfig))
+                                .rewritePath("/professor-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
+                        .uri("lb://professor-service"))
+
                 .route("student-service", r -> r
-                        .path("/student-service/**", "/students/**")  // Match both paths
+                        .path("/api/students/**")
                         .filters(f -> f
                                 .filter(jwtFilter.apply(filterConfig))
                                 .rewritePath("/student-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present

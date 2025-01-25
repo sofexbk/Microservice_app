@@ -13,4 +13,5 @@ public class AuthResponse {
     private String token;
     private UUID userId;
     private Role role;
+    private String entityId;
 }

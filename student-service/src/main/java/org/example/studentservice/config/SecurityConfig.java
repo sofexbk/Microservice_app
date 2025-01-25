@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Pas d'état pour les JWT
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/students").hasAnyRole("STUDENT", "TEACHER") // Utilisation de hasAnyRole()
+                        .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "PROFESSOR","SECRETAIRE") // Utilisation de hasAnyRole()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);

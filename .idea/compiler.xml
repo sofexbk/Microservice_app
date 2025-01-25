@@ -11,7 +11,7 @@
         <module name="gateway-service" />
         <module name="discovery-service" />
       </profile>
-      <profile name="Annotation profile for student-service" enabled="true">
+      <profile name="Annotation profile for professor-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="student-service" />
+        <module name="professor-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -27,6 +28,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="professor-service" options="-parameters" />
       <module name="student-service" options="-parameters" />
     </option>
   </component>

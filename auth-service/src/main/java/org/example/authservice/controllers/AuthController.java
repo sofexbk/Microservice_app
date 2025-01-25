@@ -6,8 +6,8 @@ import org.example.authservice.dto.LoginRequest;
 import org.example.authservice.dto.RegisterRequest;
 import org.example.authservice.dto.UserDetailsDTO;
 import org.example.authservice.services.AuthService;
+import org.example.authservice.services.AuthServiceImp;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthServiceImp authService) {
         this.authService = authService;
     }
 
