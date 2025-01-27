@@ -20,7 +20,6 @@ public record StudentRequest(
          @Past(message = "La date de naissance doit être dans le passé")
          @JsonFormat(pattern = "dd-MM-yyyy")  // Format attendu pour la date
          LocalDate birthDate,
-         @NotNull(message = "Genre obligatoire")
          Gender gender
 ) {
 }

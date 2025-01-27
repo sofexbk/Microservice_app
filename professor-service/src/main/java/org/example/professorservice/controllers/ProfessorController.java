@@ -39,4 +39,19 @@ public class ProfessorController {
         List<ProfessorDTO> professors = professorService.getAllProfessors();
         return ResponseEntity.ok(professors);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfessorDTO> updateProfessor(@PathVariable UUID id,
+                                                        @RequestBody @Validated RegisterRequest request) {
+        ProfessorDTO updatedProfessor = professorService.updateProfessor(id, request);
+        return ResponseEntity.ok(updatedProfessor);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProfessor(@PathVariable UUID id) {
+        professorService.deleteProfessor(id);
+        return ResponseEntity.ok("Professeur supprimé avec succès");
+    }
+
 }

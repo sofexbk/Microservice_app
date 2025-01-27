@@ -48,21 +48,25 @@ public class StudentServiceImp implements StudentService{
     }
 
     @Override
-    public Student updateStudent(StudentRequest student, String studentId) {
-        Student studentToUpdate = studentRepository.findById(UUID.fromString(studentId)).orElseThrow(
-                () -> new EntityNotFoundException("Etudiant non trouvé")
-        );
+    public Student updateStudent(StudentRequest studentRequest, String studentId) {
+        // Récupérer l'étudiant à mettre à jour ou lancer une exception si non trouvé
+        Student studentToUpdate = studentRepository.findById(UUID.fromString(studentId))
+                .orElseThrow(() -> new EntityNotFoundException("Etudiant non trouvé avec l'ID : " + studentId));
 
-        // Vérifier si l'APOGEE est modifié et s'il existe déjà dans la base
-        if (!studentToUpdate.getApogee().equals(student.apogee()) && studentRepository.existsByApogee(student.apogee())) {
-            throw new IllegalArgumentException("Apogee déjà utilisé");
+        // Vérification si l'APOGEE est modifié et déjà existant dans la base de données
+        if (!studentToUpdate.getApogee().equals(studentRequest.apogee())
+                && studentRepository.existsByApogee(studentRequest.apogee())) {
+            throw new IllegalArgumentException("L'APOGEE " + studentRequest.apogee() + " est déjà utilisé.");
         }
 
-        studentToUpdate.setFirstName(student.firstName());
-        studentToUpdate.setLastName(student.lastName());
-        studentToUpdate.setGender(student.gender());
-        studentToUpdate.setBirthDate(student.birthDate());
-        studentToUpdate.setApogee(student.apogee());
+        // Mise à jour des informations de l'étudiant
+        studentToUpdate.setFirstName(studentRequest.firstName());
+        studentToUpdate.setLastName(studentRequest.lastName());
+        studentToUpdate.setGender(studentRequest.gender());
+        studentToUpdate.setBirthDate(studentRequest.birthDate());
+        studentToUpdate.setApogee(studentRequest.apogee());
+
+        // Sauvegarder les modifications dans la base de données
         return studentRepository.save(studentToUpdate);
     }
 

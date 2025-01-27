@@ -11,4 +11,10 @@ public interface ProfessorService {
     Professor createProfessor(RegisterRequest request);
     ProfessorDTO getProfessorById(UUID id);
     List<ProfessorDTO> getAllProfessors();
+
+    // Méthode pour mettre à jour un professeur
+    ProfessorDTO updateProfessor(UUID professorId, RegisterRequest request);
+
+    // Méthode pour supprimer un professeur
+    void deleteProfessor(UUID professorId);
 }

@@ -74,5 +74,34 @@ public class ProfessorServiceImp implements ProfessorService{
                 .map(professor -> new ProfessorDTO(professor))
                 .collect(Collectors.toList());
     }
+    // Méthode pour mettre à jour un professeur
+    @Override
+    public ProfessorDTO updateProfessor(UUID professorId, RegisterRequest request) {
+        // Vérifier si le professeur existe
+        Professor professorToUpdate = professorRepository.findById(professorId)
+                .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
 
+        // Mettre à jour les champs du professeur
+        professorToUpdate.setFirstName(request.firstName());
+        professorToUpdate.setLastName(request.lastName());
+        professorToUpdate.setCin(request.cin());
+
+        // Sauvegarder les modifications
+        professorRepository.save(professorToUpdate);
+
+        // Retourner le DTO mis à jour
+        return new ProfessorDTO(professorToUpdate);
+    }
+
+    // Méthode pour supprimer un professeur
+    @Override
+    public void deleteProfessor(UUID professorId) {
+        // Vérifier si le professeur existe
+        Professor professorToDelete = professorRepository.findById(professorId)
+                .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
+
+        // Supprimer le professeur
+        professorRepository.delete(professorToDelete);
+
+    }
 }
