@@ -3,16 +3,18 @@ package org.example.professorservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
     @Column(unique = true)
     private String cin;
     private String firstName;
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -30,7 +32,7 @@ public class Professor {
 
     private String lastName;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 

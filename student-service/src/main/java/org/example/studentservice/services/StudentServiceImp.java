@@ -7,6 +7,7 @@ import org.example.studentservice.entities.Student;
 import org.example.studentservice.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,5 +72,27 @@ public class StudentServiceImp implements StudentService{
                 () -> new EntityNotFoundException("Etudiant non trouvé")
         );
         studentRepository.delete(studentToDelete);
+    }
+    // Méthode de recherche des étudiants en fonction des critères
+    public List<Student> searchStudents(String firstName, String lastName, String apogee, LocalDate birthDate) {
+        if (firstName != null && lastName != null && apogee != null && birthDate != null) {
+            return studentRepository.findByFirstNameAndLastNameAndApogeeAndBirthDate(firstName, lastName, apogee, birthDate);
+        } else if (firstName != null && lastName != null && birthDate != null) {
+            return studentRepository.findByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
+        } else if (firstName != null && apogee != null && birthDate != null) {
+            return studentRepository.findByFirstNameAndApogeeAndBirthDate(firstName, apogee, birthDate);
+        } else if (lastName != null && apogee != null && birthDate != null) {
+            return studentRepository.findByLastNameAndApogeeAndBirthDate(lastName, apogee, birthDate);
+        } else if (firstName != null) {
+            return studentRepository.findByFirstName(firstName);
+        } else if (lastName != null) {
+            return studentRepository.findByLastName(lastName);
+        } else if (apogee != null) {
+            return studentRepository.findByApogee(apogee);
+        } else if (birthDate != null) {
+            return studentRepository.findByBirthDate(birthDate);
+        } else {
+            return studentRepository.findAll(); // Si aucun critère, retournez tous les étudiants
+        }
     }
 }

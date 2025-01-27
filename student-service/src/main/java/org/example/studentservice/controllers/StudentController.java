@@ -5,10 +5,12 @@ import org.example.studentservice.dto.StudentResponse;
 import org.example.studentservice.entities.Student;
 import org.example.studentservice.repositories.StudentRepository;
 import org.example.studentservice.services.StudentService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,5 +45,13 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public void deleteStudent(@PathVariable String studentId) {
         studentService.deleteStudent(studentId);
+    }
+
+    @GetMapping("/search")
+    public List<Student> searchStudents(@RequestParam(required = false) String firstName,
+                                        @RequestParam(required = false) String lastName,
+                                        @RequestParam(required = false) String apogee,
+                                        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate) {
+        return studentService.searchStudents(firstName, lastName, apogee, birthDate);
     }
 }

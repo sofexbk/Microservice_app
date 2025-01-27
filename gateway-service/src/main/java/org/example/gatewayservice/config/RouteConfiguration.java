@@ -29,6 +29,20 @@ public class RouteConfiguration {
                                 .filter(jwtFilter.apply(filterConfig))
                                 .rewritePath("/student-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
                         .uri("lb://student-service"))
+
+                .route("module-service", r -> r
+                        .path("/api/modules/**")
+                        .filters(f -> f
+                                .filter(jwtFilter.apply(filterConfig))
+                                .rewritePath("/module-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
+                        .uri("lb://module-service"))
+
+                .route("inscription-service", r -> r
+                        .path("/api/inscriptions/**")
+                        .filters(f -> f
+                                .filter(jwtFilter.apply(filterConfig))
+                                .rewritePath("/module-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
+                        .uri("lb://inscription-service"))
                 .build();
     }
 }

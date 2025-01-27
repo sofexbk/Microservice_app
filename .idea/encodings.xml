@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/auth-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/inscription-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/module-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/professor-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/student-service/src/main/java" charset="UTF-8" />
   </component>

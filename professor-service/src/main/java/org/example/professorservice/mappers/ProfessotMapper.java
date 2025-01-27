@@ -9,7 +9,7 @@ public class ProfessotMapper {
     public Professor toProfessor(RegisterRequest request) {
         Professor professor = new Professor();
         professor.setFirstName(request.firstName());
-        professor.setLastName(request.firstName());
+        professor.setLastName(request.lastName());
         professor.setCin(request.cin());
         return professor;
     }
