@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
@@ -37,4 +39,5 @@ public class AuthController {
         token = token.replace("Bearer ", "");
         return ResponseEntity.ok(authService.validateToken(token));
     }
+
 }

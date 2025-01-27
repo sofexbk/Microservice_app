@@ -49,7 +49,7 @@ public class ProfessorController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProfessor(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteProfessor(@PathVariable("id") UUID id) {
         professorService.deleteProfessor(id);
         return ResponseEntity.ok("Professeur supprimé avec succès");
     }
