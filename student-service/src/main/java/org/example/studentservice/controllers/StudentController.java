@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/students")
@@ -54,4 +55,20 @@ public class StudentController {
                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate) {
         return studentService.searchStudents(firstName, lastName, apogee, birthDate);
     }
+
+    @GetMapping("/count")
+    public long getTotalStudents() {
+        return studentService.getTotalStudents();
+    }
+
+    @GetMapping("/count-by-gender")
+    public Map<String, Long> getStudentsByGender() {
+        return studentService.getStudentsCountByGender();
+    }
+
+    @GetMapping("/count-by-birthdate")
+    public Map<String, Long> getStudentsByBirthdateRange() {
+        return studentService.getStudentsCountByBirthdateRange();
+    }
+
 }

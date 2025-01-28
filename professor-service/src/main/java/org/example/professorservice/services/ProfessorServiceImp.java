@@ -104,4 +104,10 @@ public class ProfessorServiceImp implements ProfessorService{
         professorRepository.delete(professorToDelete);
 
     }
+
+    @Override
+    public long getTotalProfessors() {
+        return professorRepository.count();
+    }
+
 }

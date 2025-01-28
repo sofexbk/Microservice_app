@@ -17,5 +17,5 @@ public interface ModuleService {
     ModuleDTO assignStudentToModule(UUID moduleId, UUID studentId);
     ModuleDTO removeStudentFromModule(UUID moduleId, UUID studentId);
     List<StudentDTO> getStudentsByModuleId(UUID moduleId);
-
+    long getTotalModules();
 }

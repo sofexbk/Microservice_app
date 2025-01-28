@@ -18,21 +18,21 @@ public class AuthServiceApplication {
 		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
-//	@Bean
-//	public CommandLineRunner insertAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-//		return args -> {
-//			if (userRepository.count() == 0) {
-//				String hashedPassword = passwordEncoder.encode("admin123"); // Hachage du mot de passe
-//				User admin = User.builder()
-//						.email("admin@example.com")
-//						.password(hashedPassword)
-//						.role(Role.ADMIN)
-//						.entityId(UUID.randomUUID())
-//						.build();
-//				userRepository.save(admin);
-//				System.out.println("Admin user inserted: " + admin);
-//			}
-//		};
-//	}
+	@Bean
+	public CommandLineRunner insertAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		return args -> {
+			if (userRepository.count() == 0) {
+				String hashedPassword = passwordEncoder.encode("admin123"); // Hachage du mot de passe
+				User admin = User.builder()
+						.email("admin@example.com")
+						.password(hashedPassword)
+						.role(Role.ADMIN)
+						.entityId(UUID.randomUUID())
+						.build();
+				userRepository.save(admin);
+				System.out.println("Admin user inserted: " + admin);
+			}
+		};
+	}
 
 }

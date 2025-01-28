@@ -181,4 +181,11 @@ public class ModuleServiceImpl implements ModuleService {
                 .filter(Objects::nonNull) // Exclure les résultats null
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public long getTotalModules() {
+        return moduleRepository.count();
+    }
+
+
 }

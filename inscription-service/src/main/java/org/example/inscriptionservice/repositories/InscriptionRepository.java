@@ -12,4 +12,5 @@ public interface InscriptionRepository extends JpaRepository<Inscription, UUID> 
     boolean existsByStudentIdAndModuleId(UUID studentId, UUID moduleId);
     Optional<Inscription> findByStudentIdAndModuleId(UUID studentId, UUID moduleId);
     List<Inscription> findByModuleId(UUID moduleId);
+
 }

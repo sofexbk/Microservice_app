@@ -11,4 +11,5 @@ public interface InscriptionService {
     List<InscriptionWithDetailsDTO> getAllInscriptions();
     void annulerInscription(UUID inscriptionId);
     void supprimerInscriptionsParModule(UUID moduleId);
+    String getMostSubscribedModule();
 }

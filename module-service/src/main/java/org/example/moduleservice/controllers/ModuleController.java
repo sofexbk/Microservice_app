@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,12 @@ public class ModuleController {
 
     @GetMapping
     public ResponseEntity<List<ModuleDTO>> getAllModules() {
-        return ResponseEntity.ok(moduleService.getAllModules());
+        List<ModuleDTO> modules = moduleService.getAllModules();
+        if (modules.isEmpty()) {
+
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+        return ResponseEntity.ok(modules);
     }
 
     @GetMapping("/{id}")
@@ -88,5 +94,15 @@ public class ModuleController {
     public List<StudentDTO> getStudentsByModuleId(@PathVariable UUID moduleId) {
         return moduleService.getStudentsByModuleId(moduleId);
     }
+
+    @GetMapping("/count")
+    public long getTotalModules() {
+        return moduleService.getTotalModules();
+    }
+
+//    @GetMapping("/most-subscribed")
+//    public String getMostSubscribedModule() {
+//        return moduleService.getMostSubscribedModule();
+//    }
 
 }

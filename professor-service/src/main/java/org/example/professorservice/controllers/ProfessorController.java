@@ -54,4 +54,9 @@ public class ProfessorController {
         return ResponseEntity.ok("Professeur supprimé avec succès");
     }
 
+    @GetMapping("/count")
+    public long getTotalProfessors() {
+        return professorService.getTotalProfessors();
+    }
+
 }

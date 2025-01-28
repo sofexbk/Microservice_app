@@ -17,4 +17,6 @@ public interface ProfessorService {
 
     // Méthode pour supprimer un professeur
     void deleteProfessor(UUID professorId);
+
+    long getTotalProfessors();
 }
