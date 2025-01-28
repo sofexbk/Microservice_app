@@ -1,0 +1,52 @@
+{
+    "navbar": {
+      "home": "Home",
+      "chiffres": "Numbers",
+      "cycles": "Clubs and Associations",
+      "login": "Login",
+      "signup": "Sign Up",
+      "steps":"Steps"
+    },
+    "heroSection": {
+      "title": "JOIN EXCELLENCE",
+      "description": "Access the engineering cycles at ENSA Tangier and join elite training",
+      "info": "Discover the various pathways to join our school"
+    },
+    "achievement": {
+      "title": "ENSAT in Numbers",
+      "subtitle": "ENSA Tangier trains skilled engineers ready to face the challenges of tomorrow",
+      "graduated": "Engineers trained since 1998",
+      "graduation": "Engineers graduated each year",
+      "partners": "Partners",
+      "cycles": "Engineering Cycles"
+    },
+    "categories": {
+      "title": "Clubs and Associations",
+      "description": "Explore our engineering specialties",
+      "network": "Telecommunications & Networks Engineering",
+      "electronics": "Electronics and Automatic Systems Engineering",
+      "computer": "Computer Engineering (Software Engineering, Information Systems)",
+      "industrial": "Industrial and Logistics Engineering",
+      "ecoEnergy": "Eco-Energetic and Industrial Environment Engineering",
+      "cyberSecurity": "Cybersecurity Engineering"
+    },
+    "footer": {
+      "contact": "Contact Us",
+      "phone": "Phone: +212 5 39 39 37 43",
+      "email": "Email: gcvre@uae.ac.ma",
+      "rights": "NATIONAL SCHOOL OF APPLIED SCIENCES OF TANGIER 2024-2025 - ALL RIGHTS RESERVED"
+    },
+    "steps":{
+      "heroSubtitle1": "To submit an event request, please follow the steps below:",
+      "createAccount": "1. Create an account",
+      "stepsTitle": "Steps to follow",
+      "step1": "1. Create an account",
+      "step2": "2. Log in",
+      "step3": "3. Create the event",
+      "step4": "4. Wait for validation",
+      "step5": "5. Submit the report in the 10 days following the event",
+      "doc": "See the platform usage guide for more details"
+    }
+    
+  }
+  

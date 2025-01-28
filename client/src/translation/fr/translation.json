@@ -1,0 +1,51 @@
+{
+    "navbar": {
+      "home": "Accueil",
+      "chiffres": "Chiffres",
+      "cycles": "Clubs et Associations",
+      "login": "Se connecter",
+      "signup": "Créer un compte",
+      "steps":"Étapes"
+    },
+    "heroSection": {
+      "title": "REJOIGNEZ L'EXCELLENCE",
+      "description": "Accédez aux Cycles Ingénieurs de l'ENSA Tanger et intégrez une formation d'élite !",
+      "info": "Découvrez les différentes passerelles pour rejoindre notre école."
+    },
+    "achievement": {
+      "title": "ENSAT en Chiffres",
+      "subtitle": "L'ENSA Tanger forme des ingénieurs compétents, prêts à relever les défis de demain",
+      "graduated": "Ingénieurs diplomés depuis 1998",
+      "graduation": "Ingénieurs diplômés chaque année",
+      "partners": "Partenaires",
+      "cycles": "Cycles ingénieurs"
+    },
+    "categories": {
+      "title": "Clubs et Associations",
+      "description": "Explorez nos spécialités en ingénierie",
+      "network": "Génie des Systèmes de Télécommunications & Réseaux",
+      "electronics": "Génie des Systèmes Électroniques et Automatique",
+      "computer": "Génie Informatique (Génie Logiciel, Systèmes d’Information)",
+      "industrial": "Génie Industriel et Logistique",
+      "ecoEnergy": "Génie Éco-Énergétique et Environnement Industriel",
+      "cyberSecurity": "Génie Cybersécurité"
+    },
+    "footer": {
+      "contact": "Contactez-nous",
+      "phone": "Téléphone : +212 5 39 39 37 43",
+      "email": "Email : gcvre@uae.ac.ma",
+      "rights": "ÉCOLE NATIONALE DES SCIENCES APPLIQUÉES DE TANGER 2024-2025 - TOUS DROITS RÉSERVÉS."
+    },
+    "steps": {
+    "heroSubtitle1": "Pour déposer une demande d'événement, veuillez suivre les étapes suivantes:",
+    "createAccount": "1. Créer un compte",
+    "stepsTitle": "Étapes à suivre",
+    "step1": "1. Créer un compte ",
+    "step2": "2. Se connecter ",
+    "step3": "3. Créer l'événement ",
+    "step4": "4. Attendre la validation ",
+    "step5": "5. Déposer le compte rendu dans les 10 jours suivants de l'événement ",
+    "doc":"Voir le guide d’utilisation de la plateforme pour plus de détails"
+  }
+}
+  

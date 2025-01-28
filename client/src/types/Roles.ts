@@ -1,0 +1,6 @@
+export const ROLES = {
+    PRESIDENT: 'PRESIDENT',
+    PARRAIN: 'PARRAIN',
+    SUPER_PARRAIN: 'SUPER_PARRAIN',
+  };
+  
