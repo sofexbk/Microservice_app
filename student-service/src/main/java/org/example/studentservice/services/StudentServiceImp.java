@@ -4,12 +4,16 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.studentservice.dto.StudentRequest;
 import org.example.studentservice.dto.StudentResponse;
 import org.example.studentservice.entities.Student;
+import org.example.studentservice.enums.Gender;
 import org.example.studentservice.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImp implements StudentService{
@@ -99,4 +103,47 @@ public class StudentServiceImp implements StudentService{
             return studentRepository.findAll(); // Si aucun critère, retournez tous les étudiants
         }
     }
+
+    @Override
+    public long getTotalStudents() {
+        return studentRepository.count();
+    }
+
+    @Override
+    public Map<String, Long> getStudentsCountByGender() {
+        List<Object[]> results = studentRepository.countByGender();
+        Map<String, Long> genderCounts = new HashMap<>();
+
+        for (Object[] row : results) {
+            String gender = row[0].toString();
+            Long count = (Long) row[1];
+            genderCounts.put(gender, count);
+        }
+
+        return genderCounts;
+    }
+
+    @Override
+    public Map<String, Long> getStudentsCountByBirthdateRange() {
+// Define birthdate ranges
+        LocalDate range1Start = LocalDate.of(1990, 1, 1);
+        LocalDate range1End = LocalDate.of(1995, 12, 31);
+
+        LocalDate range2Start = LocalDate.of(1996, 1, 1);
+        LocalDate range2End = LocalDate.of(2000, 12, 31);
+
+        LocalDate range3Start = LocalDate.of(2001, 1, 1);
+        LocalDate range3End = LocalDate.of(2005, 12, 31);
+
+        // Use the repository to count students in each range
+        long countRange1 = studentRepository.countByBirthDateBetween(range1Start, range1End);
+        long countRange2 = studentRepository.countByBirthDateBetween(range2Start, range2End);
+        long countRange3 = studentRepository.countByBirthDateBetween(range3Start, range3End);
+
+        // Return the results in a Map
+        return Map.of(
+                "1990-1995", countRange1,
+                "1996-2000", countRange2,
+                "2001-2005", countRange3
+        );    }
 }

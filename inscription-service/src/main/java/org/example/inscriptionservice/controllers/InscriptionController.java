@@ -40,4 +40,9 @@ public class InscriptionController {
         inscriptionService.supprimerInscriptionsParModule(moduleId);
         return ResponseEntity.ok("Toutes les inscriptions pour ce module ont été supprimées.");
     }
+
+    @GetMapping("/most-subscribed")
+    public ResponseEntity<String> getMostSubscribedModule() {
+        return ResponseEntity.ok(inscriptionService.getMostSubscribedModule());
+    }
 }

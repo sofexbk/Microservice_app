@@ -127,5 +127,28 @@ public class InscriptionServiceImpl implements InscriptionService {
         }
     }
 
+    @Override
+    public String getMostSubscribedModule() {
+        // Récupérer la liste des inscriptions
+        List<Inscription> inscriptions = inscriptionRepository.findAll();
 
+        // Compter le nombre d'inscriptions par module
+        long maxCount = 0;
+        UUID mostSubscribedModuleId = null;
+        for (Inscription inscription : inscriptions) {
+            UUID moduleId = inscription.getModuleId();
+            long count = inscriptions.stream()
+                    .filter(i -> i.getModuleId().equals(moduleId))
+                    .count();
+
+            if (count > maxCount) {
+                maxCount = count;
+                mostSubscribedModuleId = moduleId;
+            }
+        }
+
+        // Récupérer le nom du module le plus inscrit
+        ModuleDTO mostSubscribedModule = moduleClient.getModuleById(mostSubscribedModuleId);
+        return mostSubscribedModule.getName();
+    }
 }

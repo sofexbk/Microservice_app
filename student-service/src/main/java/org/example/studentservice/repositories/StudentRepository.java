@@ -1,12 +1,15 @@
 package org.example.studentservice.repositories;
 
 import org.example.studentservice.entities.Student;
+import org.example.studentservice.enums.Gender;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,5 +41,18 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     // Recherche par date de naissance
     List<Student> findByBirthDate(LocalDate birthDate);
+
+    @Query("SELECT s.gender, COUNT(s) FROM Student s GROUP BY s.gender")
+    List<Object[]> countByGender();
+
+
+    @Query("SELECT " +
+            "CASE " +
+            "WHEN s.birthDate BETWEEN :start1 AND :end1 THEN 'Range1' " +
+            "WHEN s.birthDate BETWEEN :start2 AND :end2 THEN 'Range2' " +
+            "ELSE 'Other' END AS range, " +
+            "COUNT(s) FROM Student s GROUP BY range")
+    Map<String, Long> countByBirthdateRange();
+    long countByBirthDateBetween(LocalDate startDate, LocalDate endDate);
 
 }
