@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import Guidee from '../../../../public/Guidee.pdf';
 
 export const Steps: React.FC = () => {
   const { t } = useTranslation(); // Use the translation hook
