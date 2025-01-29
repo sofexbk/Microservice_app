@@ -58,4 +58,8 @@ public class ProfessorController {
         return professorService.getTotalProfessors();
     }
 
+    @GetMapping("/profNameStats")
+    public String getProfessorName(UUID id) {
+        return professorService.professorName(id);
+    }
 }

@@ -45,4 +45,14 @@ public class InscriptionController {
     public ResponseEntity<String> getMostSubscribedModule() {
         return ResponseEntity.ok(inscriptionService.getMostSubscribedModule());
     }
+
+    @GetMapping("/most-popular-professor")
+    public ResponseEntity<String> getMostPopularProfessor() {
+        return ResponseEntity.ok(inscriptionService.getMostPopularProfessor());
+    }
+
+    @GetMapping("/most-popular-period")
+    public ResponseEntity<String> getMostPopularPeriod() {
+        return ResponseEntity.ok(inscriptionService.getMostPopularPeriod());
+    }
 }

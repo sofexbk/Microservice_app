@@ -20,10 +20,10 @@ public interface StatistiquesService {
 
     long getTotalModules();
 
-//    String getMostSubscribedModule();
-//
-//    String getMostPopularProfessor();
-//
-//    String getMostPopularPeriod();
+    String getMostSubscribedModule();
+
+    String getMostPopularProfessor();
+
+    String getMostPopularPeriod();
 }
 
