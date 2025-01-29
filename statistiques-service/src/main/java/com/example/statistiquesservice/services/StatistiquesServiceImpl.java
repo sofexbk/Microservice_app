@@ -4,8 +4,8 @@ import com.example.statistiquesservice.clients.InscriptionClient;
 import com.example.statistiquesservice.clients.ModuleClient;
 import com.example.statistiquesservice.clients.ProfessorClient;
 import com.example.statistiquesservice.clients.StudentClient;
+import com.example.statistiquesservice.dto.ProfessorDTO;
 import com.example.statistiquesservice.services.StatistiquesService;
-import org.example.moduleservice.dto.ProfessorDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class StatistiquesServiceImpl implements StatistiquesService {
         stats.put("totalStudents", getTotalStudents());
         stats.put("studentsByGender", getStudentsByGender());
         stats.put("studentsByBirthdate", getStudentsByBirthdateRange());
-        stats.put("totalProfessors", getTotalProfessors());
+       stats.put("totalProfessors", getTotalProfessors());
         stats.put("totalModules", getTotalModules());
 //        stats.put("mostSubscribedModule", getMostSubscribedModule());
 //        stats.put("mostPopularProfessor", getMostPopularProfessor());
@@ -58,9 +58,9 @@ public class StatistiquesServiceImpl implements StatistiquesService {
     }
 
     @Override
-    public List<ProfessorDTO> getTotalProfessors() {
-        return professorClient.getTotalProfessors();
-    }
+   public long getTotalProfessors() {
+       return professorClient.getTotalProfessors();
+   }
 
     @Override
     public long getTotalModules() {

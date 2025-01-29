@@ -1,6 +1,7 @@
 package com.example.statistiquesservice.services;
 
-import org.example.moduleservice.dto.ProfessorDTO;
+
+import com.example.statistiquesservice.dto.ProfessorDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public interface StatistiquesService {
 
     Map<String, Long> getStudentsByBirthdateRange();
 
-    List<ProfessorDTO> getTotalProfessors();
+    long getTotalProfessors();
 
     long getTotalModules();
 

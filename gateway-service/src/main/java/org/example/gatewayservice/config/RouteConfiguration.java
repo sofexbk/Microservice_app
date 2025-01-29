@@ -41,7 +41,7 @@ public class RouteConfiguration {
                         .path("/api/inscriptions/**")
                         .filters(f -> f
                                 .filter(jwtFilter.apply(filterConfig))
-                                .rewritePath("/module-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
+                                .rewritePath("/inscription-service/(?<segment>.*)", "/${segment}"))  // Remove prefix if present
                         .uri("lb://inscription-service"))
 
                 .route("statistiques-service", r -> r

@@ -1,6 +1,5 @@
-package org.example.professorservice.dto;
+package com.example.statistiquesservice.dto;
 
-import org.example.professorservice.entities.Professor;
 
 import java.util.UUID;
 
@@ -10,15 +9,16 @@ public class ProfessorDTO {
     private String lastName;
     private String cin;
 
-    public ProfessorDTO() {
-    }
-    public ProfessorDTO(Professor professor) {
-        this.id = professor.getId();
-        this.firstName = professor.getFirstName();
-        this.lastName = professor.getLastName();
-        this.cin = professor.getCin();
+    public ProfessorDTO(UUID id, String cin, String firstName, String lastName) {
+        this.id = id;
+        this.cin = cin;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
+    public ProfessorDTO() {
+
+    }
     public UUID getId() {
         return id;
     }

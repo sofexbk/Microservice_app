@@ -20,7 +20,6 @@ public class ProfessorController {
         this.professorService = professorService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<String> createProfessor(@RequestBody @Validated RegisterRequest request) {
         professorService.createProfessor(request);

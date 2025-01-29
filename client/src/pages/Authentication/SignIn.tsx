@@ -146,15 +146,6 @@ const SignIn: React.FC = () => {
                 {localError || loginError}
               </div>
             ) : null}
-            <p className="text-base font-medium text-body-color dark:text-white">
-              Vous n'avez pas de compte ?{' '}
-              <Link
-                to="/auth/signup"
-                className="text-primary underline hover:no-underline"
-              >
-                S'inscrire
-              </Link>
-            </p>
           </div>
           {loginMessage && (
             <Typography color="success.main" align="center">
