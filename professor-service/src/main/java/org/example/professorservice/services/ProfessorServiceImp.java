@@ -110,4 +110,11 @@ public class ProfessorServiceImp implements ProfessorService{
         return professorRepository.count();
     }
 
+    @Override
+    public String professorName(UUID id) {
+        Professor professor = professorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
+        return professor.getFirstName() + " " + professor.getLastName();
+    }
+
 }

@@ -2,6 +2,7 @@ package org.example.inscriptionservice.services;
 
 import jakarta.transaction.Transactional;
 import org.example.inscriptionservice.clients.ModuleClient;
+import org.example.inscriptionservice.clients.ProfessorClient;
 import org.example.inscriptionservice.clients.StudentClient;
 import org.example.inscriptionservice.dto.InscriptionDTO;
 import org.example.inscriptionservice.dto.InscriptionWithDetailsDTO;
@@ -15,7 +16,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,9 @@ public class InscriptionServiceImpl implements InscriptionService {
 
     @Autowired
     private InscriptionRepository inscriptionRepository;
+
+    @Autowired
+    private ProfessorClient professorClient; // Injection du client Feign
 
     @Autowired
     private ModuleClient moduleClient; // Injection du client Feign
@@ -151,4 +157,71 @@ public class InscriptionServiceImpl implements InscriptionService {
         ModuleDTO mostSubscribedModule = moduleClient.getModuleById(mostSubscribedModuleId);
         return mostSubscribedModule.getName();
     }
+
+    @Override
+    public String getMostPopularPeriod() {
+        // Récupérer la liste des inscriptions
+        List<Inscription> inscriptions = inscriptionRepository.findAll();
+
+        // Compter le nombre d'inscriptions par période
+        long maxCount = 0;
+        LocalDate mostPopularPeriod = null;
+        for (Inscription inscription : inscriptions) {
+            LocalDate period = inscription.getInscriptionDate();
+            long count = inscriptions.stream()
+                    .filter(i -> i.getInscriptionDate().equals(period))
+                    .count();
+
+            if (count > maxCount) {
+                maxCount = count;
+                mostPopularPeriod = period;
+            }
+        }
+
+        return mostPopularPeriod.toString();
+    }
+
+    @Override
+    public String getMostPopularProfessor() {
+        // Récupérer la liste des inscriptions
+        List<Inscription> inscriptions = inscriptionRepository.findAll();
+        System.out.println("Inscriptions1: " + inscriptions);
+
+        // Vérifier si la liste est vide
+        if (inscriptions.isEmpty()) {
+            return "Aucun professeur trouvé"; // Gérer le cas où il n'y a pas d'inscriptions
+        }
+
+        // Utilisation d'une Map pour compter les occurrences des professeurs
+        Map<String, Long> professorCountMap = new HashMap<>();
+
+        for (Inscription inscription : inscriptions) {
+            ModuleDTO module = moduleClient.getModuleById(inscription.getModuleId());
+            if (module == null) {
+                continue; // Éviter les modules non trouvés
+            }
+
+            String professorName = module.getProfessorName();
+            if (professorName == null) {
+                continue;
+            }
+
+            professorCountMap.put(professorName, professorCountMap.getOrDefault(professorName, 0L) + 1);
+        }
+
+        // Trouver le professeur avec le plus d'inscriptions
+        String mostPopularProfessor = professorCountMap.entrySet().stream()
+                .max(Map.Entry.comparingByValue()) // Trouver le max selon le nombre d'inscriptions
+                .map(Map.Entry::getKey)
+                .orElse(null); // Retourner null si aucun professeur n'est trouvé
+        System.out.println("mostPOPULAR4" + mostPopularProfessor);
+        if (mostPopularProfessor == null) {
+            return "Aucun professeur trouvé"; // Gérer le cas où aucun professeur n'est enregistré
+        }
+
+        // Récupérer le nom du professeur
+
+        return mostPopularProfessor;
+    }
+
 }

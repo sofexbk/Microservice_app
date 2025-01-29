@@ -36,9 +36,9 @@ public class StatistiquesServiceImpl implements StatistiquesService {
         stats.put("studentsByBirthdate", getStudentsByBirthdateRange());
        stats.put("totalProfessors", getTotalProfessors());
         stats.put("totalModules", getTotalModules());
-//        stats.put("mostSubscribedModule", getMostSubscribedModule());
-//        stats.put("mostPopularProfessor", getMostPopularProfessor());
-//        stats.put("mostPopularPeriod", getMostPopularPeriod());
+        stats.put("mostSubscribedModule", getMostSubscribedModule());
+        stats.put("mostPopularProfessor", getMostPopularProfessor());
+        stats.put("mostPopularPeriod", getMostPopularPeriod());
         return stats;
     }
 
@@ -49,12 +49,20 @@ public class StatistiquesServiceImpl implements StatistiquesService {
 
     @Override
     public Map<String, Long> getStudentsByGender() {
-        return studentClient.getStudentsByGender();
+        try {
+            return studentClient.getStudentsByGender();
+        } catch (Exception e) {
+            return new HashMap<>();
+        }
     }
 
     @Override
     public Map<String, Long> getStudentsByBirthdateRange() {
-        return studentClient.getStudentsByBirthdateRange();
+        try{
+            return studentClient.getStudentsByBirthdateRange();
+        } catch (Exception e) {
+            return new HashMap<>();
+        }
     }
 
     @Override
@@ -67,18 +75,31 @@ public class StatistiquesServiceImpl implements StatistiquesService {
         return moduleClient.getTotalModules();
     }
 
-//    @Override
-//    public String getMostSubscribedModule() {
-//        return inscriptionClient.getMostSubscribedModule();
-//    }
+    @Override
+    public String getMostSubscribedModule() {
+        try {
+            String mostSubscribedModule = inscriptionClient.getMostSubscribedModule();
+            return mostSubscribedModule;
+        } catch (Exception e) {
+            return "N/A";
+        }
+    }
 
-//    @Override
-//    public String getMostPopularProfessor() {
-//        return inscriptionClient.getMostPopularProfessor();
-//    }
-//
-//    @Override
-//    public String getMostPopularPeriod() {
-//        return inscriptionClient.getMostPopularPeriod();
-//    }
+    @Override
+    public String getMostPopularProfessor() {
+            try{
+                return inscriptionClient.getMostPopularProfessor();
+            } catch (Exception e) {
+                return "N/A";
+            }
+    }
+
+    @Override
+    public String getMostPopularPeriod() {
+        try{
+            return inscriptionClient.getMostPopularPeriod();
+        } catch (Exception e) {
+            return "N/A";
+        }
+    }
 }

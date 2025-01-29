@@ -36,4 +36,7 @@ public class ModuleDTO {
 
     public Set<UUID> getStudentIds() { return studentIds; }
     public void setStudentIds(Set<UUID> studentIds) { this.studentIds = studentIds; }
+
+    public String getProfessorName() { return professorName; }
+    public void setProfessorName(String professorName) { this.professorName = professorName; }
 }

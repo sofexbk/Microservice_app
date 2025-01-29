@@ -19,4 +19,5 @@ public interface ProfessorService {
     void deleteProfessor(UUID professorId);
 
     long getTotalProfessors();
+    String professorName(UUID id);
 }
