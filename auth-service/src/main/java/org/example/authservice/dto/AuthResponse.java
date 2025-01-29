@@ -14,4 +14,5 @@ public class AuthResponse {
     private UUID userId;
     private Role role;
     private String entityId;
+    private String email;
 }

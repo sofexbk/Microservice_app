@@ -1,4 +1,4 @@
-package org.example.professorservice.config;
+package org.example.authservice.config;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

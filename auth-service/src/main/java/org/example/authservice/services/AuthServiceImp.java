@@ -1,18 +1,16 @@
 package org.example.authservice.services;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.example.authservice.dto.AuthResponse;
-import org.example.authservice.dto.LoginRequest;
-import org.example.authservice.dto.RegisterRequest;
-import org.example.authservice.dto.UserDetailsDTO;
+import org.example.authservice.dto.*;
 import org.example.authservice.entities.User;
 import org.example.authservice.repositories.UserRepository;
 import org.example.authservice.security.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,6 +19,7 @@ public class AuthServiceImp implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     @Autowired
     public AuthServiceImp(UserRepository userRepository,
@@ -53,12 +52,10 @@ public class AuthServiceImp implements AuthService {
                 .build();
     }
 
+
     public AuthResponse login(LoginRequest request) {
-        System.out.println("Login request: " + request);
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        System.out.println("User: " + user);
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
@@ -66,15 +63,16 @@ public class AuthServiceImp implements AuthService {
 
         String jwt = jwtService.generateToken(user);
 
-        System.out.printf("Generated token: %s\n", jwt);
 
         return AuthResponse.builder()
                 .token(jwt)
                 .userId(user.getId())
                 .role(user.getRole())
                 .entityId(user.getEntityId().toString())
+                .email(user.getEmail())
                 .build();
     }
+
 
     public UserDetailsDTO validateToken(String token) {
         if (!jwtService.isTokenValid(token)) {

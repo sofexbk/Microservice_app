@@ -1,4 +1,4 @@
-package org.example.professorservice.config;
+package org.example.authservice.config;
 
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -20,4 +20,5 @@ public class FeignClientConfiguration {
             }
         };
     }
+
 }
