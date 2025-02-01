@@ -2,18 +2,16 @@ package org.example.studentservice.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.studentservice.dto.StudentRequest;
-import org.example.studentservice.dto.StudentResponse;
 import org.example.studentservice.entities.Student;
-import org.example.studentservice.enums.Gender;
 import org.example.studentservice.repositories.StudentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImp implements StudentService{
@@ -40,8 +38,9 @@ public class StudentServiceImp implements StudentService{
     }
 
     @Override
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public Page<Student> getStudents(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return studentRepository.findAll(pageRequest);
     }
 
     @Override
@@ -81,27 +80,11 @@ public class StudentServiceImp implements StudentService{
         );
         studentRepository.delete(studentToDelete);
     }
+
+    @Override
     // Méthode de recherche des étudiants en fonction des critères
     public List<Student> searchStudents(String firstName, String lastName, String apogee, LocalDate birthDate) {
-        if (firstName != null && lastName != null && apogee != null && birthDate != null) {
-            return studentRepository.findByFirstNameAndLastNameAndApogeeAndBirthDate(firstName, lastName, apogee, birthDate);
-        } else if (firstName != null && lastName != null && birthDate != null) {
-            return studentRepository.findByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
-        } else if (firstName != null && apogee != null && birthDate != null) {
-            return studentRepository.findByFirstNameAndApogeeAndBirthDate(firstName, apogee, birthDate);
-        } else if (lastName != null && apogee != null && birthDate != null) {
-            return studentRepository.findByLastNameAndApogeeAndBirthDate(lastName, apogee, birthDate);
-        } else if (firstName != null) {
-            return studentRepository.findByFirstName(firstName);
-        } else if (lastName != null) {
-            return studentRepository.findByLastName(lastName);
-        } else if (apogee != null) {
-            return studentRepository.findByApogee(apogee);
-        } else if (birthDate != null) {
-            return studentRepository.findByBirthDate(birthDate);
-        } else {
-            return studentRepository.findAll(); // Si aucun critère, retournez tous les étudiants
-        }
+        return studentRepository.findByCriteria(firstName, lastName, apogee, birthDate);
     }
 
     @Override
@@ -146,4 +129,9 @@ public class StudentServiceImp implements StudentService{
                 "1996-2000", countRange2,
                 "2001-2005", countRange3
         );    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
 }

@@ -11,6 +11,8 @@ import org.example.moduleservice.dto.StudentDTO;
 import org.example.moduleservice.entities.Module;
 import org.example.moduleservice.repositories.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,23 +35,21 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public CreateModuleDTO createModule(CreateModuleDTO moduleDTO) {
-        try {
+            // check si code existe
+            if (moduleRepository.existsByCode(moduleDTO.getCode())) {
+                throw new IllegalArgumentException("Code déjà utilisé");
+            }
             Module module = new Module();
             module.setCode(moduleDTO.getCode());
             module.setName(moduleDTO.getName());
             Module createdModule = moduleRepository.save(module);
             return new CreateModuleDTO(createdModule.getId(), createdModule.getCode(), createdModule.getName());
-        } catch (Exception e) {
             // Lancer une exception si quelque chose échoue
-            throw new RuntimeException("Erreur lors de la création du module : " + e.getMessage());
-        }
-    }
 
+    }
     @Override
-    public List<ModuleDTO> getAllModules() {
-        return moduleRepository.findAll().stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+    public Page<ModuleDTO> getAllModules(Pageable pageable) {
+        return moduleRepository.findAll(pageable).map(this::mapToDTO);
     }
 
     @Override
@@ -77,7 +77,10 @@ public class ModuleServiceImpl implements ModuleService {
         // Vérifier que le module existe
         Module module = moduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Module introuvable avec l'id : " + id));
-
+        // Vérifier si le code est déjà utilisé par un autre module
+        if (moduleRepository.existsByCode(moduleDTO.getCode()) && !module.getCode().equals(moduleDTO.getCode())) {
+            throw new RuntimeException("Code déjà utilisé");
+        }
         // Mettre à jour les propriétés
         module.setCode(moduleDTO.getCode());
         module.setName(moduleDTO.getName());
@@ -185,6 +188,31 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public long getTotalModules() {
         return moduleRepository.count();
+    }
+
+    @Override
+    public List<ModuleDTO> searchModules(String code, String name) {
+        return moduleRepository.findByCriteria(code, name)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ModuleDTO> getModules() {
+        return moduleRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ModuleDTO> getModulesByProfessorId(UUID professorId) {
+
+        return moduleRepository.findByProfessorId(professorId)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
 

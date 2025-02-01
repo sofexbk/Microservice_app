@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record RegisterRequest(
-        //@NotNull(message = "L'email est requis")  // Validation du champ email
+        @NotNull(message = "L'email est requis")
         String email,
 
         @NotNull(message = "Le prénom est requis")  // Validation du champ firstName

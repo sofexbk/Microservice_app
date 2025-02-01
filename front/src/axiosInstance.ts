@@ -1,78 +1,50 @@
-import axios from 'axios';
-import Cookies from 'js-cookie'; // Assurez-vous d'importer js-cookie
-import Swal from 'sweetalert2';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:8080/api',
 });
 
-// Request interceptor to include auth token from cookies
+// Request interceptor
 axiosInstance.interceptors.request.use(
-    (request) => {
-        const authToken = Cookies.get('authToken'); // Lire le token depuis les cookies
-        if (authToken) {
-            request.headers.Authorization = `Bearer ${authToken}`;
+    (config: InternalAxiosRequestConfig) => {
+        const token = localStorage.getItem('user') 
+            ? JSON.parse(localStorage.getItem('user')!).token 
+            : null;
+            
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
-        return request;
+        
+        // Log request details
+        console.log('Request:', config.method?.toUpperCase(), config.url, 'Params:', config.params, 'Data:', config.data);
+        
+        return config;
     },
-    (error) => {
+    (error: AxiosError) => {
         return Promise.reject(error);
     }
 );
 
-// Fonction pour afficher une alerte et attendre la confirmation de l'utilisateur
-const showAlertAndWait = async () => {
-  await Swal.fire({
-    icon: 'warning',
-    title: 'Session Expirée',
-    text: 'Votre session a expiré. Veuillez vous reconnecter.',
-    confirmButtonText: 'OK',
-    customClass: {
-      container: 'custom-swal-container',
-      popup: 'custom-swal-popup-warning',
-      title: 'custom-swal-title-warning',
-      confirmButton: 'custom-swal-confirm-button-warning'
-    }
-  });
-  // Ici, vous pouvez ajouter un délai avant de poursuivre la redirection
-  return new Promise(resolve => setTimeout(resolve, 1500)); // Attendre 2 secondes
-};
-
-// Création d'un nouvel intercepteur de réponse pour gérer les tokens expirés
-axiosInstance.interceptors.response.use(
-  (response) => response, // Laisser passer les réponses réussies
-  async (error) => {
-    const originalRequest = error.config;
-
-    // Liste des chemins à exclure de la logique de gestion de token expiré
-    const excludedPaths = ['/auth/signin', '/auth/signup', '/auth/forgot-password', '/api/reset-password'];
-
-    // Vérifier si l'URL de la requête actuelle fait partie des chemins exclus
-    const isExcludedPath = excludedPaths.some(path => originalRequest.url.includes(path));
-
-    // Si la route est exclue, ignorer la logique de redirection
-    if (isExcludedPath) {
-      return Promise.reject(error);
-    }
-
-    // Gérer l'erreur 403 (Forbidden) indiquant un problème d'authentification ou d'autorisation
-    if (error.response && error.response.status === 403 && !originalRequest._retry) {
-      originalRequest._retry = true; // Marquer la requête comme réessayée
-
-      // Afficher une alerte indiquant que la session a expiré
-      await showAlertAndWait();
-
-      // Supprimer les cookies d'authentification
-      Cookies.remove('authToken');
-
-      // Rediriger vers la page de connexion
-      window.location.href = '/auth/signin';
-
-      return Promise.reject(error); // Rejeter l'erreur pour arrêter l'exécution
-    }
-
-    return Promise.reject(error);
-  }
-);
+// // Response interceptor
+// axiosInstance.interceptors.response.use(
+//     (response) => response,
+//     async (error: AxiosError) => {
+//         const originalRequest = error.config;
+        
+//         // Handle 401 Unauthorized errors
+//         if (error.response?.status === 401) {
+//             // Option 1: Redirect to login
+//             window.location.href = '/login';
+//             // Option 2: Try to refresh token
+//             // const newToken = await refreshToken();
+//             // if (newToken && originalRequest) {
+//             //     originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+//             //     return axiosInstance(originalRequest);
+//             // }
+//         }
+        
+//         return Promise.reject(error);
+//     }
+// );
 
 export default axiosInstance;

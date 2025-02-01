@@ -1,13 +1,20 @@
 package org.example.professorservice.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
+import jakarta.validation.constraints.NotNull;
 import org.example.professorservice.entities.Professor;
 
 import java.util.UUID;
 
 public class ProfessorDTO {
+
     private UUID id;
+    @NotNull(message = "Le prénom est requis")
     private String firstName;
+    @NotNull(message = "Le nom est requis")
     private String lastName;
+    @NotNull(message = "Le CIN est requis")
     private String cin;
 
     public ProfessorDTO() {

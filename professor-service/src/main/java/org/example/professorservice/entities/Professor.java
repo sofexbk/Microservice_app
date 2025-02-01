@@ -14,6 +14,15 @@ public class Professor {
     private String cin;
     private String firstName;
 
+    public Professor() {
+    }
+    public Professor(UUID id, String cin, String firstName, String lastName) {
+        this.id = id;
+        this.cin = cin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }

@@ -1,10 +1,7 @@
 package org.example.authservice.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.authservice.dto.AuthResponse;
-import org.example.authservice.dto.LoginRequest;
-import org.example.authservice.dto.RegisterRequest;
-import org.example.authservice.dto.UserDetailsDTO;
+import org.example.authservice.dto.*;
 import org.example.authservice.services.AuthService;
 import org.example.authservice.services.AuthServiceImp;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +27,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Validated LoginRequest request) {
-        System.out.printf("Login request: %s\n", request);
         return ResponseEntity.ok(authService.login(request));
     }
 
@@ -38,6 +34,17 @@ public class AuthController {
     public ResponseEntity<UserDetailsDTO> validateToken(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         return ResponseEntity.ok(authService.validateToken(token));
+    }
+
+    @DeleteMapping("/delete/{entityId}")
+    public void deleteUser(@PathVariable UUID entityId) {
+        authService.deleteUser(entityId);
+    }
+
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<String> updatePassword(@RequestBody @Validated UpdatePasswordRequest request, @PathVariable UUID id) {
+            authService.updatePassword(request, id);
+            return ResponseEntity.ok("Mot de passe mis à jour avec succès");
     }
 
 }

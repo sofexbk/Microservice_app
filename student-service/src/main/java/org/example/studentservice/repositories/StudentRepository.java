@@ -4,6 +4,7 @@ import org.example.studentservice.entities.Student;
 import org.example.studentservice.enums.Gender;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
@@ -55,4 +56,13 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     Map<String, Long> countByBirthdateRange();
     long countByBirthDateBetween(LocalDate startDate, LocalDate endDate);
 
+    @Query("SELECT s FROM Student s " +
+            "WHERE (:firstName IS NULL OR LOWER(s.firstName) LIKE LOWER(CONCAT('%', :firstName, '%'))) " +
+            "AND (:lastName IS NULL OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))) " +
+            "AND (:apogee IS NULL OR s.apogee = :apogee) " +
+            "AND (:birthDate IS NULL OR s.birthDate = :birthDate)")
+    List<Student> findByCriteria(@Param("firstName") String firstName,
+                                 @Param("lastName") String lastName,
+                                 @Param("apogee") String apogee,
+                                 @Param("birthDate") LocalDate birthDate);
 }

@@ -3,6 +3,7 @@ import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authservice.dto.*;
 import org.example.authservice.entities.User;
+import org.example.authservice.enums.Role;
 import org.example.authservice.repositories.UserRepository;
 import org.example.authservice.security.JwtService;
 import org.slf4j.Logger;
@@ -30,17 +31,25 @@ public class AuthServiceImp implements AuthService {
         this.jwtService = jwtService;
     }
 
+    @Override
     public AuthResponse register(RegisterRequest request) {
+        logger.info("Registering user with email: {}", request.getEmail());
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email exste déjà");
+        }
+
+        UUID entityId = null;
+        if (request.getRole() != Role.ADMIN && request.getEntityId() != null && !request.getEntityId().isEmpty()) {
+            entityId = UUID.fromString(request.getEntityId());
         }
 
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
-                .entityId(UUID.fromString(request.getEntityId()))
+                .entityId(entityId) // entityId sera null si le rôle est ADMIN
                 .build();
+
 
         user = userRepository.save(user);
         String jwt = jwtService.generateToken(user);
@@ -52,10 +61,11 @@ public class AuthServiceImp implements AuthService {
                 .build();
     }
 
-
+    @Override
     public AuthResponse login(LoginRequest request) {
+        logger.info("Logging in user with email: {}", request.getEmail());
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("L'utilisateur n'existe pas"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
@@ -63,18 +73,23 @@ public class AuthServiceImp implements AuthService {
 
         String jwt = jwtService.generateToken(user);
 
+        String entityId = null;
+        if (user.getEntityId() != null) {
+            entityId = user.getEntityId().toString();
+        }
 
         return AuthResponse.builder()
                 .token(jwt)
                 .userId(user.getId())
                 .role(user.getRole())
-                .entityId(user.getEntityId().toString())
+                .entityId(entityId)
                 .email(user.getEmail())
                 .build();
     }
 
-
+    @Override
     public UserDetailsDTO validateToken(String token) {
+        logger.info("Validating token");
         if (!jwtService.isTokenValid(token)) {
             throw new RuntimeException("Invalid token");
         }
@@ -86,6 +101,31 @@ public class AuthServiceImp implements AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return new UserDetailsDTO(user.getId(), user.getRole());
+    }
+
+    @Override
+    public void deleteUser(UUID entityId) {
+        logger.info("Deleting user with entityId: {}", entityId);
+        // Vérifier si l'utilisateur existe with entityId
+         User user =  userRepository.findByEntityId(entityId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        userRepository.delete(user);
+
+    }
+
+    @Override
+    public void updatePassword(UpdatePasswordRequest request, UUID id) {
+        logger.info("Updating password for user with id: {}", id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
 }

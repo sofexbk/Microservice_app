@@ -1,67 +1,120 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
-import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
 import DefaultLayout from './layout/DefaultLayout';
-import ForgotPassword from './pages/Authentication/ForgotPassword';
-import ResetPassword from './pages/Authentication/ResetPassword';
+import AllStudents from './pages/students/AllStudents';
+import LoginPage from './pages/Authentication/LoginPage';
 import NotFound from './pages/NotFound';
-
-import Account from './pages/Account';
-import HomePage from './pages/HomePage';
+import AllProfessors from './pages/professors/AllProfessors';
+import AllModules from './pages/modules/AllModules';
+import InscriptionComponent from './pages/inscriptions/InscriptionComponent';
+import StatisticsDashboard from './pages/statistiques/StatisticsDashboard';
+import ProfModules from './pages/professors/ProfModules';
+import ProfessorProfile from './pages/professors/ProfessorProfile';
+import PrivateRoute from './pages/security/PrivateRoute';
+import Unauthorized from './pages/Unauthorized';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top on route change
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  return loading ? (
-    <Loader /> // Show loader while loading initial content
-  ) : (
+  if (loading) {
+    return <Loader />;
+  }
+
+  return (
     <Routes>
-      <Route path="/auth/signin" element={<SignIn />} />
-      <Route path="/auth/signup" element={<SignUp />} />
-      <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-      <Route path="/auth/reset-password" element={<ResetPassword />} />
-      <Route path="/" element={<HomePage />} />
+      {/* Routes publiques */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
+      {/* Routes administrateur */}
+      <Route
+        path="/students"
+        element={
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <DefaultLayout>
+              <AllStudents />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/professors"
+        element={
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <DefaultLayout>
+              <AllProfessors />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/modules"
+        element={
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <DefaultLayout>
+              <AllModules />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/inscriptions"
+        element={
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <DefaultLayout>
+              <InscriptionComponent />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/statistiques"
+        element={
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <DefaultLayout>
+              <StatisticsDashboard />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
 
+      {/* Routes professeur */}
+      <Route
+        path="/prof-modules"
+        element={
+          <PrivateRoute allowedRoles={['PROFESSOR']}>
+            <DefaultLayout>
+              <ProfModules />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/prof-compte"
+        element={
+          <PrivateRoute allowedRoles={['PROFESSOR']}>
+            <DefaultLayout>
+              <ProfessorProfile />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
 
-  
-     
-        <Route path="*" element={<NotFound />} /> 
-
+      {/* Route 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
 
 export default App;
-/*<Route
-path="/account"
-element={<PrivateRoute  element={          
-  <DefaultLayout>
-    <PageTitle title="Compte" />
-    <Account />
-  </DefaultLayout>
-}
-/>}/>
-/*       <Route
-path="/super/eventsAtt"
-element={<PrivateRoute  element={  
-  <DefaultLayout>
-    <PageTitle title="Événement en attente de validation" />
-    <EvenementAttSup />
-  </DefaultLayout>
-}
-allowedRoles={['SUPER_PARRAIN']}
-/>}/>*/

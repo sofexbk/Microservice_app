@@ -9,6 +9,9 @@ import org.example.professorservice.entities.Professor;
 import org.example.professorservice.enums.Role;
 import org.example.professorservice.mappers.ProfessotMapper;
 import org.example.professorservice.repositories.ProfessorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Transactional
+
 @Service
 public class ProfessorServiceImp implements ProfessorService{
     private final ProfessorRepository professorRepository;
@@ -30,14 +33,19 @@ public class ProfessorServiceImp implements ProfessorService{
         this.emailService = emailService;
     }
 
-
+    @Transactional
     @Override
     public Professor createProfessor(RegisterRequest request) {
+        // CHECK IF CIN EXISTS
+        if (professorRepository.existsByCin(request.cin())) {
+            throw new RuntimeException("CIN déjà utilisé");
+        }
         Professor savedProf = professorRepository.save(professotMapper.toProfessor(request));
         String password = generateRandomPassword();
 
+
         User user = new User(
-                request.email(), password, Role.PROFESSOR, savedProf.getId().toString() // Convertir UUID en String
+                request.email(), password, Role.PROFESSOR, savedProf.getId().toString()
         );
 
         authServiceClient.registerUser(user);
@@ -60,6 +68,7 @@ public class ProfessorServiceImp implements ProfessorService{
         return password.toString();
     }
 
+    @Override
     public ProfessorDTO getProfessorById(UUID id) {
         // Recherche du professeur avec l'ID UUID
         Professor professor = professorRepository.findById(id)
@@ -67,24 +76,28 @@ public class ProfessorServiceImp implements ProfessorService{
         return new ProfessorDTO(professor);
     }
 
-    // Méthode pour obtenir tous les professeurs
-    public List<ProfessorDTO> getAllProfessors() {
-        return professorRepository.findAll()
-                .stream()
-                .map(professor -> new ProfessorDTO(professor))
-                .collect(Collectors.toList());
+    @Override
+    public Page<ProfessorDTO> getAllProfessors(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Professor> professorsPage = professorRepository.findAll(pageable);
+        return professorsPage.map(professor -> new ProfessorDTO(professor));
     }
+
     // Méthode pour mettre à jour un professeur
     @Override
-    public ProfessorDTO updateProfessor(UUID professorId, RegisterRequest request) {
+    public ProfessorDTO updateProfessor(UUID professorId, ProfessorDTO request) {
         // Vérifier si le professeur existe
         Professor professorToUpdate = professorRepository.findById(professorId)
                 .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
 
+        // Vérifier si le CIN est déjà utilisé
+        if (professorRepository.existsByCin(request.getCin()) && !professorToUpdate.getCin().equals(request.getCin())) {
+            throw new RuntimeException("CIN déjà utilisé");
+        }
         // Mettre à jour les champs du professeur
-        professorToUpdate.setFirstName(request.firstName());
-        professorToUpdate.setLastName(request.lastName());
-        professorToUpdate.setCin(request.cin());
+        professorToUpdate.setFirstName(request.getFirstName());
+        professorToUpdate.setLastName(request.getLastName());
+        professorToUpdate.setCin(request.getCin());
 
         // Sauvegarder les modifications
         professorRepository.save(professorToUpdate);
@@ -93,14 +106,15 @@ public class ProfessorServiceImp implements ProfessorService{
         return new ProfessorDTO(professorToUpdate);
     }
 
-    // Méthode pour supprimer un professeur
+    @Transactional
     @Override
     public void deleteProfessor(UUID professorId) {
-        // Vérifier si le professeur existe
+
+
         Professor professorToDelete = professorRepository.findById(professorId)
                 .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
 
-        // Supprimer le professeur
+        authServiceClient.deleteUser(professorToDelete.getId());
         professorRepository.delete(professorToDelete);
 
     }
@@ -115,6 +129,23 @@ public class ProfessorServiceImp implements ProfessorService{
         Professor professor = professorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Professeur non trouvé"));
         return professor.getFirstName() + " " + professor.getLastName();
+    }
+
+    @Override
+    public List<ProfessorDTO> searchStudents(String firstName, String lastName, String cin) {
+        professorRepository.findByCriteria(firstName, lastName, cin);
+        return professorRepository.findByCriteria(firstName, lastName, cin)
+                .stream()
+                .map(professor -> new ProfessorDTO(professor))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProfessorDTO> getAllProfessors() {
+        return professorRepository.findAll()
+                .stream()
+                .map(professor -> new ProfessorDTO(professor))
+                .collect(Collectors.toList());
     }
 
 }

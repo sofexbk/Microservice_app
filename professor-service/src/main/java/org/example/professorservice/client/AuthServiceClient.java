@@ -15,6 +15,7 @@ public interface AuthServiceClient {
     @PostMapping("/api/auth/register")
     User registerUser(@RequestBody User user);
 
-    @DeleteMapping("/api/auth/delete/{id}")
-    void deleteUser(@PathVariable("id") UUID id);
+    @DeleteMapping("/api/auth/delete/{entityId}")
+    void deleteUser(@PathVariable("entityId") UUID entityId);
+
 }

@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImp implements EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-
+    public EmailServiceImp(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     @Override
     @Async

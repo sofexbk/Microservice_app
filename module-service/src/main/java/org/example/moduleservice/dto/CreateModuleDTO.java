@@ -1,11 +1,15 @@
 package org.example.moduleservice.dto;
 
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 public class CreateModuleDTO {
-    private UUID id; // Vous pouvez générer cet ID automatiquement côté service.
+    private UUID id;
+    @NotNull(message = "Le code est requis")
     private String code;
+    @NotNull(message = "Le nom est requis")
     private String name;
 
     public CreateModuleDTO() { }

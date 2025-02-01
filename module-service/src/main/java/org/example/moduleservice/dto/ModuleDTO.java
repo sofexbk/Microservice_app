@@ -10,8 +10,7 @@ public class ModuleDTO {
     private UUID id;
     private String code;
     private String name;
-    private String professorName; // Nouveau champ
-
+    private String professorName;
 
     public ModuleDTO(UUID id, String code, String name, String professorName) {
         this.id = id;
@@ -19,6 +18,8 @@ public class ModuleDTO {
         this.name = name;
         this.professorName = professorName;
     }
+
+
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
