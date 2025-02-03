@@ -13,16 +13,16 @@ public class Professor {
     @Column(unique = true)
     private String cin;
     private String firstName;
+    private String lastName;
 
-    public Professor() {
-    }
     public Professor(UUID id, String cin, String firstName, String lastName) {
         this.id = id;
         this.cin = cin;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
+    public Professor() {
+    }
     public void setId(UUID id) {
         this.id = id;
     }
@@ -39,7 +39,6 @@ public class Professor {
         this.lastName = lastName;
     }
 
-    private String lastName;
 
     public UUID getId() {
         return id;

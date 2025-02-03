@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 
     @Override
     public GatewayFilter apply(Config config) {
-        // Remove the lb:// prefix as it's handled by the load balancer configuration
         WebClient webClient = webClientBuilder
                 .baseUrl("http://" + config.getAuthServiceName())
                 .build();

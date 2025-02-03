@@ -25,26 +25,4 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// // Response interceptor
-// axiosInstance.interceptors.response.use(
-//     (response) => response,
-//     async (error: AxiosError) => {
-//         const originalRequest = error.config;
-        
-//         // Handle 401 Unauthorized errors
-//         if (error.response?.status === 401) {
-//             // Option 1: Redirect to login
-//             window.location.href = '/login';
-//             // Option 2: Try to refresh token
-//             // const newToken = await refreshToken();
-//             // if (newToken && originalRequest) {
-//             //     originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-//             //     return axiosInstance(originalRequest);
-//             // }
-//         }
-        
-//         return Promise.reject(error);
-//     }
-// );
-
 export default axiosInstance;

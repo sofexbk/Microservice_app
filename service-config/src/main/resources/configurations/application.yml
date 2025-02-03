@@ -8,14 +8,7 @@ eureka:
 spring:
   cloud:
     config:
-      # Whether to override system properties with configuration properties. Setting this to false ensures that system properties are not overridden by configuration properties.
-      # System properties are JVM-level properties that can be set via the command line or within the application.
-      # Configuration properties are application-specific settings defined in configuration files like application.yaml.
       override-system-properties: false
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 15MB
 
   mail:
     host: smtp.gmail.com

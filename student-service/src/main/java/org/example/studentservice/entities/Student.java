@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
